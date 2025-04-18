@@ -1,5 +1,5 @@
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
-create table jobs(
+create table IF NOT EXISTS jobs(
   id UUID PRIMARY KEY DEFAULT uuid_generate_v4 (),
   title TEXT NOT NULL,
   position TEXT NOT NULL,
@@ -8,5 +8,5 @@ create table jobs(
   salary INT,
   created_at TIMESTAMPTZ DEFAULT NOW(),
   updated_at TIMESTAMPTZ DEFAULT NOW(),
-  company_id UUID NOT NULL REFERENCES users(id)
+  company_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE
 )

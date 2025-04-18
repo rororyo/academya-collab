@@ -1,6 +1,6 @@
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
-CREATE Table jobseeker_skills(
+CREATE Table IF NOT EXISTS job_skills(
   id UUID PRIMARY KEY DEFAULT uuid_generate_v4 (),
-  job_id UUID NOT NULL REFERENCES jobs(id),
-  skill_id UUID NOT NULL REFERENCES skills(id)
+  job_id UUID NOT NULL REFERENCES jobs(id) ON DELETE CASCADE,
+  skill_id UUID NOT NULL REFERENCES skills(id) ON DELETE CASCADE
 )

@@ -8,7 +8,7 @@ import (
 
 type Job struct {
 	ID          uuid.UUID `gorm:"type:uuid;default:gen_random_uuid();primaryKey"`
-	CompanyID   uuid.UUID `gorm:"column:recruiter_id;not null"`
+	CompanyID   uuid.UUID `gorm:"column:company_id;not null"`
 	Title       string    `gorm:"column:title;not null"`
 	Position    string    `gorm:"column:position;not null"`
 	Description string    `gorm:"column:description;not null"`
@@ -18,5 +18,6 @@ type Job struct {
 	UpdatedAt   time.Time `gorm:"column:updated_at;autoUpdateTime"`
 
 	// Foreign key relation
-	Company User `gorm:"foreignKey:CompanyID;references:ID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE"`
+	Company User     `gorm:"foreignKey:CompanyID;references:ID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE"`
+	Skills  []*Skill `gorm:"many2many:job_skills"`
 }

@@ -25,16 +25,20 @@ type BootstrapConfig struct {
 func Bootstrap(config *BootstrapConfig) {
 	//setup repositories
 	userRepository := repository.NewUserRepository(config.Log)
+	jobRepository := repository.NewJobRepository(config.Log)
+	skillRepository := repository.NewSkillRepository(config.Log)
 	//setup use cases
 	userUseCase := usecase.NewUserUseCase(config.DB, config.Log, config.Validate, userRepository)
+	jobUsecase := usecase.NewJobUseCase(config.DB, config.Log, config.Validate, jobRepository, skillRepository)
 	//setup controllers
 	userController := http.NewUserController(userUseCase, config.Log)
-
+	jobController := http.NewJobController(jobUsecase, config.Log)
 	//setup middleware
 	authMiddleware := middleware.NewAuth(userUseCase)
 	routeConfig := route.RouteConfig{
 		App:            config.App,
 		UserController: userController,
+		JobController:  jobController,
 		AuthMiddleware: authMiddleware,
 	}
 
